@@ -1,0 +1,11 @@
+Disturb:Rahatsız etmek
+Assessment:Değerlendirme
+Recommendation:Tavsiye
+Definition:Tanım
+Content:İçerik
+Contact:İletişim
+Engineer:Mühendis
+Bilingual:İki dilli
+Stream:Akış
+Alien:Uzaylı
+Strange:Yabancı
