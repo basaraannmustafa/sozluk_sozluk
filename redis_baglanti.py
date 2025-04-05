@@ -2,7 +2,7 @@ import redis
 
 def redis_baglan():
     r = redis.Redis(
-        host="redis-13967.c300.eu-central-1-1.ec2.redislabs.cloud.com",
+        host="redis-13967.c300.eu-central-1-1.ec2.redns.redis-cloud.com",
         port=13967,
         username="default",
         password="he7hSzA089lNcWBFRv4B62EY0S9rmOP2",
