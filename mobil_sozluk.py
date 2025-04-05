@@ -63,22 +63,20 @@ elif sayfa == "📖 Sözlük":
     yeni_anlam = st.text_input("Anlamı:")
 
     from redis_ekle import kelime_ekle
-    
     if st.button("Ekle"):
         if yeni_kelime and yeni_anlam:
             kelime_ekle(yeni_kelime, yeni_anlam)
             st.success(f"✅ '{yeni_kelime.capitalize()}' eklenmiştir.")
 
-from redis_sil import kelime_sil
-
-st.subheader("➖ Kelime Sil")
-sil_kelime = st.text_input("Silinecek Kelime:")
-if st.button("Sil"):
-    sonuc = kelime_sil(sil_kelime)
-    if sonuc == 1:
-        st.warning(f"❌ '{sil_kelime.capitalize()}' silinmiştir.")
-    else:
-        st.error("Kelime bulunamadı.")
+    st.subheader("🗑️ Kelime Sil")
+    from redis_sil import kelime_sil
+    sil_kelime = st.text_input("Silinecek Kelime:")
+    if st.button("Sil"):
+        sonuc = kelime_sil(sil_kelime)
+        if sonuc == 1:
+            st.warning(f"❌ '{sil_kelime.capitalize()}' silinmiştir.")
+        else:
+            st.error("Kelime bulunamadı.")
 
 # 📝 Quiz Modu
 elif sayfa == "📝 Quiz Modu":
