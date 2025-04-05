@@ -75,7 +75,6 @@ st.subheader("➖ Kelime Sil")
 sil_kelime = st.text_input("Silinecek Kelime:")
 if st.button("Sil"):
     sonuc = kelime_sil(sil_kelime)
-
     if sonuc == 1:
         st.warning(f"❌ '{sil_kelime.capitalize()}' silinmiştir.")
     else:
