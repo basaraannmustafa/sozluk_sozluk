@@ -13,56 +13,66 @@ st.set_page_config(page_title="İngilizce-Türkçe Sözlük", layout="centered")
 # Tema stili
 st.markdown("""
     <style>
-    /* Arka plan */
+    /* Genel Arka Plan */
     body {
-        background-color: #f2f2f2;
+        background-color: #f5f5f5;
     }
+
+    /* Tüm yazı tipleri */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
-        color: #333;
-        transition: all 0.3s ease;
+        color: #333333;
+        transition: all 0.3s ease-in-out;
     }
 
     /* Başlıklar */
     h1, h2, h3 {
-        color: #222;
-        font-weight: 600;
+        color: #222222;
     }
 
     /* Butonlar */
-    .stButton > button {
-        background-color: #4a90e2;
+    .stButton>button {
+        background: linear-gradient(to right, #4a90e2, #6fb1fc);
         color: white;
-        border-radius: 8px;
-        padding: 0.6em 1.2em;
         border: none;
-        transition: background-color 0.3s ease;
+        padding: 0.6em 1.2em;
+        border-radius: 10px;
+        transition: background 0.3s ease-in-out;
     }
 
-    .stButton > button:hover {
-        background-color: #357ABD;
+    .stButton>button:hover {
+        background: linear-gradient(to right, #357ABD, #5794e0);
     }
 
     /* Giriş alanları */
-    input, textarea {
+    input, textarea, .stTextInput>div>div>input {
         background-color: white;
-        border-radius: 6px;
-        border: 1px solid #cccccc;
-        padding: 0.4em 0.8em;
-        transition: border-color 0.3s ease;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 0.5em;
+        transition: border 0.3s ease-in-out;
+    }
+
+    input:focus, textarea:focus {
+        border: 1px solid #4a90e2;
     }
 
     /* Veri tablosu */
     .stDataFrame {
-        border-radius: 6px;
+        border-radius: 10px;
+        background-color: #ffffff;
     }
 
-    /* Alt kısımdaki yazılar */
-    footer {
-        display: none;
+    /* Kenar çubuğu başlığı */
+    .css-1d391kg { 
+        color: #222222;
     }
+
+    /* Alt footer yazısını gizle (Streamlit logosu) */
+    footer {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
+
 
 # Sayfa seçici
 sayfa = st.sidebar.selectbox("📂 Sayfa Seçiniz", ["🏠 Ana Sayfa", "📖 Sözlük", "📝 Quiz Modu", "📜 Sözlük Listesi"])
