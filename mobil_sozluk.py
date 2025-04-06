@@ -10,51 +10,58 @@ from redis_listele import tum_kelimeleri_getir
 # Sayfa ayarı (en üste gelmeli!)
 st.set_page_config(page_title="İngilizce-Türkçe Sözlük", layout="centered")
 
-# Özel font ve emoji desteği
+# Tema stili
 st.markdown("""
-   <style>
-/* Arka plan rengi */
-body {
-    background-color: #f2f2f2;
-}
+    <style>
+    /* Arka plan */
+    body {
+        background-color: #f2f2f2;
+    }
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+        color: #333;
+        transition: all 0.3s ease;
+    }
 
-/* Genel yazı tipi ve font */
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-    color: #333333;
-}
+    /* Başlıklar */
+    h1, h2, h3 {
+        color: #222;
+        font-weight: 600;
+    }
 
-/* Başlıklar */
-h1, h2, h3, h4 {
-    color: #222222;
-}
+    /* Butonlar */
+    .stButton > button {
+        background-color: #4a90e2;
+        color: white;
+        border-radius: 8px;
+        padding: 0.6em 1.2em;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
 
-/* Butonlar */
-button, .stButton>button {
-    background-color: #4a90e2;
-    color: white;
-    border-radius: 8px;
-    padding: 0.6em 1.2em;
-    border: none;
-}
+    .stButton > button:hover {
+        background-color: #357ABD;
+    }
 
-button:hover, .stButton>button:hover {
-    background-color: #357ABD;
-}
+    /* Giriş alanları */
+    input, textarea {
+        background-color: white;
+        border-radius: 6px;
+        border: 1px solid #cccccc;
+        padding: 0.4em 0.8em;
+        transition: border-color 0.3s ease;
+    }
 
-/* Giriş kutuları ve kutucuklar */
-input, textarea, .stTextInput>div>div>input {
-    background-color: white;
-    border-radius: 6px;
-    border: 1px solid #cccccc;
-    padding: 0.4em 0.8em;
-}
+    /* Veri tablosu */
+    .stDataFrame {
+        border-radius: 6px;
+    }
 
-/* Veri tablosu */
-.stDataFrame {
-    border-radius: 6px;
-}
-</style>
+    /* Alt kısımdaki yazılar */
+    footer {
+        display: none;
+    }
+    </style>
 """, unsafe_allow_html=True)
 
 # Sayfa seçici
