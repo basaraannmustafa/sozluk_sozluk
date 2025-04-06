@@ -12,42 +12,53 @@ st.set_page_config(page_title="İngilizce-Türkçe Sözlük", layout="centered")
 
 # Özel font ve emoji desteği
 st.markdown("""
-    <style>
-    @font-face {
-        font-family: 'Inter';
-        src: url('Inter-Regular.otf') format('opentype');
-    }
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-    }
-    </style>
+   <style>
+/* Arka plan rengi */
+body {
+    background-color: #f2f2f2;
+}
+
+/* Genel yazı tipi ve font */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+    color: #333333;
+}
+
+/* Başlıklar */
+h1, h2, h3, h4 {
+    color: #222222;
+}
+
+/* Butonlar */
+button, .stButton>button {
+    background-color: #4a90e2;
+    color: white;
+    border-radius: 8px;
+    padding: 0.6em 1.2em;
+    border: none;
+}
+
+button:hover, .stButton>button:hover {
+    background-color: #357ABD;
+}
+
+/* Giriş kutuları ve kutucuklar */
+input, textarea, .stTextInput>div>div>input {
+    background-color: white;
+    border-radius: 6px;
+    border: 1px solid #cccccc;
+    padding: 0.4em 0.8em;
+}
+
+/* Veri tablosu */
+.stDataFrame {
+    border-radius: 6px;
+}
+</style>
 """, unsafe_allow_html=True)
-
-# Sözlük dosyasını yükleme
-def sozlugu_yukle():
-    sozluk = {}
-    if os.path.exists("sozluk.txt"):
-        with open("sozluk.txt", "r", encoding="utf-8") as f:
-            for satir in f:
-                try:
-                    kelime, anlam = satir.strip().split(":")
-                    sozluk[kelime] = anlam
-                except ValueError:
-                    continue
-    return sozluk
-
-# Sözlüğü kaydetme
-def sozlugu_kaydet(sozluk):
-    with open("sozluk.txt", "w", encoding="utf-8") as f:
-        for kelime, anlam in sozluk.items():
-            f.write(f"{kelime}:{anlam}\n")
 
 # Sayfa seçici
 sayfa = st.sidebar.selectbox("📂 Sayfa Seçiniz", ["🏠 Ana Sayfa", "📖 Sözlük", "📝 Quiz Modu", "📜 Sözlük Listesi"])
-
-# Sözlük verisi
-sozluk = sozlugu_yukle()
-ters_sozluk = {v: k for k, v in sozluk.items()}
 
 # 🏠 Ana Sayfa
 if sayfa == "🏠 Ana Sayfa":
