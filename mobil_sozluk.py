@@ -108,7 +108,7 @@ elif sayfa == "📝 Quiz Modu":
         st.session_state.quiz_kelime = ""
         st.session_state.quiz_cevap = ""
         st.session_state.soru_tipi = ""
-        st.session_state.sec_options = []
+        st.session_state.sec_option = ""
 
     def yeni_soru():
         if random.choice([True, False]):
