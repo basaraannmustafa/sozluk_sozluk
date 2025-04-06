@@ -6,44 +6,62 @@ import pandas as pd
 # Sayfa ayarı (en üste gelmeli!)
 st.set_page_config(page_title="İngilizce-Türkçe Sözlük", layout="centered")
 
-# Özel font ve emoji desteği
+# Tema stili
 st.markdown("""
     <style>
-    @font-face {
-        font-family: 'Inter';
-        src: url('Inter-Regular.otf') format('opentype');
+    /* Arka plan */
+    body {
+        background-color: #f2f2f2;
     }
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    /* Başlıklar */
+    h1, h2, h3 {
+        color: #222;
+        font-weight: 600;
+    }
+
+    /* Butonlar */
+    .stButton > button {
+        background-color: #4a90e2;
+        color: white;
+        border-radius: 8px;
+        padding: 0.6em 1.2em;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .stButton > button:hover {
+        background-color: #357ABD;
+    }
+
+    /* Giriş alanları */
+    input, textarea {
+        background-color: white;
+        border-radius: 6px;
+        border: 1px solid #cccccc;
+        padding: 0.4em 0.8em;
+        transition: border-color 0.3s ease;
+    }
+
+    /* Veri tablosu */
+    .stDataFrame {
+        border-radius: 6px;
+    }
+
+    /* Alt kısımdaki yazılar */
+    footer {
+        display: none;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Sözlük dosyasını yükleme
-def sozlugu_yukle():
-    sozluk = {}
-    if os.path.exists("sozluk.txt"):
-        with open("sozluk.txt", "r", encoding="utf-8") as f:
-            for satir in f:
-                try:
-                    kelime, anlam = satir.strip().split(":")
-                    sozluk[kelime] = anlam
-                except ValueError:
-                    continue
-    return sozluk
-
-# Sözlüğü kaydetme
-def sozlugu_kaydet(sozluk):
-    with open("sozluk.txt", "w", encoding="utf-8") as f:
-        for kelime, anlam in sozluk.items():
-            f.write(f"{kelime}:{anlam}\n")
-
 # Sayfa seçici
 sayfa = st.sidebar.selectbox("📂 Sayfa Seçiniz", ["🏠 Ana Sayfa", "📖 Sözlük", "📝 Quiz Modu", "📜 Sözlük Listesi"])
-
-# Sözlük verisi
-sozluk = sozlugu_yukle()
-ters_sozluk = {v: k for k, v in sozluk.items()}
 
 # 🏠 Ana Sayfa
 if sayfa == "🏠 Ana Sayfa":
@@ -54,6 +72,10 @@ if sayfa == "🏠 Ana Sayfa":
 elif sayfa == "📖 Sözlük":
     st.subheader("🔍 Kelime Ara")
     kelime = st.text_input("Kelime giriniz:")
+
+    sozluk = tum_kelimeleri_getir()
+    ters_sozluk = {v: k for k, v in sozluk.items()}
+
     if st.button("Ara"):
         anlam = sozluk.get(kelime.capitalize(), ters_sozluk.get(kelime.capitalize(), "Kelime bulunamadı."))
         st.success(f"**{kelime.capitalize()} ➜ {anlam}**")
