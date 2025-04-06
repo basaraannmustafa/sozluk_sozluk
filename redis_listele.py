@@ -5,5 +5,7 @@ def tum_kelimeleri_getir():
     kelimeler = {}
     for key in r.keys('*'):
         kelimeler[key] = r.get(key)
-    return kelimeler
     
+    sirali_kelimeler = dict(sorted(kelimeler.items()))
+
+    return sirali_kelimeler
