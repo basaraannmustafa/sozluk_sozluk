@@ -80,7 +80,7 @@ sayfa = st.sidebar.selectbox("📂 Sayfa Seçiniz", ["🏠 Ana Sayfa", "📖 Sö
 # 🏠 Ana Sayfa
 if sayfa == "🏠 Ana Sayfa":
     st.markdown("## 📚 İngilizce-Türkçe Sözlük")
-    st.markdown("Bu site ile kelime arayabilir, yeni kelime ekleyebilir veya quiz modunda kendinizi test edebilirsiniz.")
+    st.markdown("Bu site ile kelime arayabilir, yeni kelime ekleyebilir veya Quiz modunda kendinizi test edebilirsiniz.")
 
 # 📖 Sözlük Sayfası
 elif sayfa == "📖 Sözlük":
