@@ -3,47 +3,79 @@ import random
 import os
 import pandas as pd
 
+from redis_ekle import kelime_ekle
+from redis_sil import kelime_sil
+from redis_listele import tum_kelimeleri_getir
+
 # Sayfa ayarı (en üste gelmeli!)
 st.set_page_config(page_title="İngilizce-Türkçe Sözlük", layout="centered")
 
-# Özel font ve emoji desteği
+# Tema stili
 st.markdown("""
     <style>
-    @font-face {
-        font-family: 'Inter';
-        src: url('Inter-Regular.otf') format('opentype');
+    /* Genel Arka Plan */
+    body {
+        background-color: #f5f5f5;
     }
+
+    /* Tüm yazı tipleri */
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif;
+        color: #333333;
+        transition: all 0.3s ease-in-out;
     }
+
+    /* Başlıklar */
+    h1, h2, h3 {
+        color: #222222;
+    }
+
+    /* Butonlar */
+    .stButton>button {
+        background: linear-gradient(to right, #4a90e2, #6fb1fc);
+        color: white;
+        border: none;
+        padding: 0.6em 1.2em;
+        border-radius: 10px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .stButton>button:hover {
+        background: linear-gradient(to right, #357ABD, #5794e0);
+    }
+
+    /* Giriş alanları */
+    input, textarea, .stTextInput>div>div>input {
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 0.5em;
+        transition: border 0.3s ease-in-out;
+    }
+
+    input:focus, textarea:focus {
+        border: 1px solid #4a90e2;
+    }
+
+    /* Veri tablosu */
+    .stDataFrame {
+        border-radius: 10px;
+        background-color: #ffffff;
+    }
+
+    /* Kenar çubuğu başlığı */
+    .css-1d391kg { 
+        color: #222222;
+    }
+
+    /* Alt footer yazısını gizle (Streamlit logosu) */
+    footer {visibility: hidden;}
     </style>
 """, unsafe_allow_html=True)
 
-# Sözlük dosyasını yükleme
-def sozlugu_yukle():
-    sozluk = {}
-    if os.path.exists("sozluk.txt"):
-        with open("sozluk.txt", "r", encoding="utf-8") as f:
-            for satir in f:
-                try:
-                    kelime, anlam = satir.strip().split(":")
-                    sozluk[kelime] = anlam
-                except ValueError:
-                    continue
-    return sozluk
-
-# Sözlüğü kaydetme
-def sozlugu_kaydet(sozluk):
-    with open("sozluk.txt", "w", encoding="utf-8") as f:
-        for kelime, anlam in sozluk.items():
-            f.write(f"{kelime}:{anlam}\n")
 
 # Sayfa seçici
 sayfa = st.sidebar.selectbox("📂 Sayfa Seçiniz", ["🏠 Ana Sayfa", "📖 Sözlük", "📝 Quiz Modu", "📜 Sözlük Listesi"])
-
-# Sözlük verisi
-sozluk = sozlugu_yukle()
-ters_sozluk = {v: k for k, v in sozluk.items()}
 
 # 🏠 Ana Sayfa
 if sayfa == "🏠 Ana Sayfa":
@@ -54,22 +86,24 @@ if sayfa == "🏠 Ana Sayfa":
 elif sayfa == "📖 Sözlük":
     st.subheader("🔍 Kelime Ara")
     kelime = st.text_input("Kelime giriniz:")
+
+    sozluk = tum_kelimeleri_getir()
+    ters_sozluk = {v: k for k, v in sozluk.items()}
+
     if st.button("Ara"):
-        anlam = sozluk.get(kelime.capitalize(), ters_sozluk.get(kelime.capitalize(), "Kelime bulunamadı."))
+        anlam = sozluk.get(kelime.capitalize(), ters_sozluk.get(kelime.capitalize(), "Kelime bulunamadı.")) 
         st.success(f"**{kelime.capitalize()} ➜ {anlam}**")
 
     st.subheader("➕ Yeni Kelime Ekle")
     yeni_kelime = st.text_input("Yeni Kelime:")
     yeni_anlam = st.text_input("Anlamı:")
 
-    from redis_ekle import kelime_ekle
     if st.button("Ekle"):
         if yeni_kelime and yeni_anlam:
             kelime_ekle(yeni_kelime, yeni_anlam)
             st.success(f"✅ '{yeni_kelime.capitalize()}' eklenmiştir.")
 
     st.subheader("🗑️ Kelime Sil")
-    from redis_sil import kelime_sil
     sil_kelime = st.text_input("Silinecek Kelime:")
     if st.button("Sil"):
         sonuc = kelime_sil(sil_kelime)
@@ -78,15 +112,17 @@ elif sayfa == "📖 Sözlük":
         else:
             st.error("Kelime bulunamadı.")
 
-# 📝 Quiz Modu
+# 📝 Quiz Modu 
 elif sayfa == "📝 Quiz Modu":
     st.subheader("🧠 Quiz Modu")
+    sozluk = tum_kelimeleri_getir()
+    ters_sozluk = {v: k for k, v in sozluk.items()}
 
     if "quiz_kelime" not in st.session_state:
         st.session_state.quiz_kelime = ""
         st.session_state.quiz_cevap = ""
         st.session_state.soru_tipi = ""
-        st.session_state.sec_options = []
+        st.session_state.sec_option = ""
 
     def yeni_soru():
         if random.choice([True, False]):
@@ -118,8 +154,6 @@ elif sayfa == "📝 Quiz Modu":
                     st.session_state.quiz_kelime = ""
 
 # 📜 Sözlük Listesi Sayfası
-
-from redis_listele import tum_kelimeleri_getir
 
 if sayfa == "📜 Sözlük Listesi":
     st.header("📜 Tüm Sözlük Listesi")
