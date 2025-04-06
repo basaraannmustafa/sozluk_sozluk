@@ -3,6 +3,10 @@ import random
 import os
 import pandas as pd
 
+from redis_ekle import kelime_ekle
+from redis_sil import kelime_sil
+from redis_listele import tum_kelimeleri_getir
+
 # Sayfa ayarı (en üste gelmeli!)
 st.set_page_config(page_title="İngilizce-Türkçe Sözlük", layout="centered")
 
@@ -62,14 +66,12 @@ elif sayfa == "📖 Sözlük":
     yeni_kelime = st.text_input("Yeni Kelime:")
     yeni_anlam = st.text_input("Anlamı:")
 
-    from redis_ekle import kelime_ekle
     if st.button("Ekle"):
         if yeni_kelime and yeni_anlam:
             kelime_ekle(yeni_kelime, yeni_anlam)
             st.success(f"✅ '{yeni_kelime.capitalize()}' eklenmiştir.")
 
     st.subheader("🗑️ Kelime Sil")
-    from redis_sil import kelime_sil
     sil_kelime = st.text_input("Silinecek Kelime:")
     if st.button("Sil"):
         sonuc = kelime_sil(sil_kelime)
@@ -78,9 +80,7 @@ elif sayfa == "📖 Sözlük":
         else:
             st.error("Kelime bulunamadı.")
 
-# 📝 Quiz Modu
-    from redis_listele import tum_kelimeleri_getir
-
+# 📝 Quiz Modu 
 elif sayfa == "📝 Quiz Modu":
     st.subheader("🧠 Quiz Modu")
     sozluk = tum_kelimeleri_getir()
