@@ -123,8 +123,6 @@ elif sayfa == "📝 Quiz Modu":
 
 # 📜 Sözlük Listesi Sayfası
 
-from redis_listele import tum_kelimeleri_getir
-
 if sayfa == "📜 Sözlük Listesi":
     st.header("📜 Tüm Sözlük Listesi")
     sozluk = tum_kelimeleri_getir()
