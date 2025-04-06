@@ -79,8 +79,12 @@ elif sayfa == "📖 Sözlük":
             st.error("Kelime bulunamadı.")
 
 # 📝 Quiz Modu
+    from redis_listele import tum_kelimeleri_getir
+
 elif sayfa == "📝 Quiz Modu":
     st.subheader("🧠 Quiz Modu")
+    sozluk = tum_kelimeleri_getir()
+    ters_sozluk = {v: k for k, v in sozluk.items()}
 
     if "quiz_kelime" not in st.session_state:
         st.session_state.quiz_kelime = ""
