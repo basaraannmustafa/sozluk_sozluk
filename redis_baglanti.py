@@ -5,7 +5,7 @@ def redis_baglan():
         host="redis-13967.c300.eu-central-1-1.ec2.redns.redis-cloud.com",
         port=13967,
         username="default",
-        password="he7hSzA089lNcWBFRv4B62EY0S9rmOP2",
+        password="he7hSzA089lnCwBFRv4B62EY0S9rmOP2",
         decode_responses=True
     )
     return r
