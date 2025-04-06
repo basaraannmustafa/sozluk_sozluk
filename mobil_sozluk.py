@@ -76,8 +76,12 @@ if sayfa == "🏠 Ana Sayfa":
 elif sayfa == "📖 Sözlük":
     st.subheader("🔍 Kelime Ara")
     kelime = st.text_input("Kelime giriniz:")
+
+    sozluk = tum_kelimeleri_getir()
+    ters_sozluk = {v: k for k, v in sozluk.items()}
+
     if st.button("Ara"):
-        anlam = sozluk.get(kelime.capitalize(), ters_sozluk.get(kelime.capitalize(), "Kelime bulunamadı."))
+        anlam = sozluk.get(kelime.capitalize(), ters_sozluk.get(kelime.capitalize(), "Kelime bulunamadı.")) 
         st.success(f"**{kelime.capitalize()} ➜ {anlam}**")
 
     st.subheader("➕ Yeni Kelime Ekle")
