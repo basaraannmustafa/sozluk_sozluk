@@ -5,6 +5,9 @@ def tum_kelimeleri_getir():
     kelimeler = {}
 
     for key in r.keys('*'):
+        if r.type(key) != b'hash':  # 👈 sadece hash türünde olanları al
+            continue
+        
         veri = r.hgetall(key)
         # Redis'ten gelen veriler bytes türündedir, decode edelim
         anlam = veri.get(b'anlam', b'').decode('utf-8')
