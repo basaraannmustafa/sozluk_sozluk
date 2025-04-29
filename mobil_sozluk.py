@@ -107,7 +107,7 @@ elif sayfa == "📖 Sözlük":
     st.subheader("✍️ Yeni Kelime Ekle")
     yeni_kelime = st.text_input("Yeni Kelime:")
     yeni_anlam = st.text_input("Anlamı:")
-    es_anlamlilar = st.text_input("Bu kelimenin eş anlamlıları (virgülle ayırınız):")
+    es_anlamlilar = st.text_input("Bu Kelimenin Eş Anlamlıları:")
 
     if st.button("Ekle"):
         if yeni_kelime and yeni_anlam:
