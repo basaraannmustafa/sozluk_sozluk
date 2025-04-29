@@ -1,8 +1,8 @@
 def kelime_ekle(kelime, anlam, es_anlamlar=None):
     r = redis_baglan()
-    kelime_key = kelime.lower()  # Anahtar her zaman küçük
+    kelime_key = kelime.lower()
     veri = {
-        "orijinal": kelime,  # Kullanıcının girdiği gibi sakla
+        "orijinal": kelime,
         "anlam": anlam.capitalize()
     }
     if es_anlamlar:
