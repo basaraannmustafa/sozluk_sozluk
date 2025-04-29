@@ -75,11 +75,11 @@ st.markdown("""
 
 
 # Sayfa seçici
-sayfa = st.sidebar.selectbox("📂 Sayfa Seçiniz", ["🏠 Ana Sayfa", "📖 Sözlük", "📝 Quiz Modu", "📜 Sözlük Listesi"])
+sayfa = st.sidebar.selectbox("📑 Sayfa Seçiniz", ["🏠 Ana Sayfa", "📖 Sözlük", "🎯 Quiz Modu", "🧾 Sözlük Listesi"])
 
 # 🏠 Ana Sayfa
 if sayfa == "🏠 Ana Sayfa":
-    st.markdown("## 📚 İngilizce-Türkçe Sözlük")
+    st.markdown("## 🧭 İngilizce-Türkçe Sözlük")
     st.markdown("Bu site ile kelime arayabilir, yeni kelime ekleyebilir veya Quiz modunda kendinizi test edebilirsiniz.")
 
 # 📖 Sözlük Sayfası
@@ -91,16 +91,28 @@ elif sayfa == "📖 Sözlük":
     ters_sozluk = {v: k for k, v in sozluk.items()}
 
     if st.button("Ara"):
-        anlam = sozluk.get(kelime.capitalize(), ters_sozluk.get(kelime.capitalize(), "Kelime bulunamadı.")) 
-        st.success(f"**{kelime.capitalize()} ➜ {anlam}**")
+        bilgi = sozluk.get(kelime.lower()) or sozluk.get(kelime.capitalize())
+        if not bilgi:
+            ters_bilgi = ters_sozluk.get(kelime.lower()) or ters_sozluk.get(kelime.capitalize())
+            if ters_bilgi:
+                bilgi = sozluk.get(ters_bilgi)
+                st.success(f"**{kelime.capitalize()} ➜ {ters_bilgi} ({bilgi.get('es_anlamlar', '')})**")
+            else:
+                st.error("Kelime bulunamadı.")
+        else:
+            es = bilgi.get('es_anlamlar', '')
+            es_text = f" (Eş anlamlılar: {es})" if es else ""
+            st.success(f"**{kelime.capitalize()} ➜ {bilgi['anlam']}{es_text}**")
 
-    st.subheader("➕ Yeni Kelime Ekle")
+    st.subheader("✍️ Yeni Kelime Ekle")
     yeni_kelime = st.text_input("Yeni Kelime:")
     yeni_anlam = st.text_input("Anlamı:")
+    es_anlamlilar = st.text_input("Bu kelimenin eş anlamlıları (virgülle ayırınız):")
 
     if st.button("Ekle"):
         if yeni_kelime and yeni_anlam:
-            kelime_ekle(yeni_kelime, yeni_anlam)
+            es_anlam_listesi = [w.strip() for w in es_anlamlilar.split(",") if w.strip()]
+            kelime_ekle(yeni_kelime, yeni_anlam, es_anlam_listesi)
             st.success(f"✅ '{yeni_kelime.capitalize()}' eklenmiştir.")
 
     st.subheader("🗑️ Kelime Sil")
@@ -112,9 +124,9 @@ elif sayfa == "📖 Sözlük":
         else:
             st.error("Kelime bulunamadı.")
 
-# 📝 Quiz Modu 
-elif sayfa == "📝 Quiz Modu":
-    st.subheader("🧠 Quiz Modu")
+# 🎯 Quiz Modu 
+elif sayfa == "🎯 Quiz Modu":
+    st.subheader("🧪 Quiz Modu")
     sozluk = tum_kelimeleri_getir()
     ters_sozluk = {v: k for k, v in sozluk.items()}
 
@@ -153,14 +165,17 @@ elif sayfa == "📝 Quiz Modu":
                     st.error(f"❌ Yanlış! Doğru cevap: {st.session_state.quiz_cevap}")
                     st.session_state.quiz_kelime = ""
 
-# 📜 Sözlük Listesi Sayfası
+# 🧾 Sözlük Listesi Sayfası
 
-if sayfa == "📜 Sözlük Listesi":
-    st.header("📜 Tüm Sözlük Listesi")
+if sayfa == "🧾 Sözlük Listesi":
+    st.header("🧾 Tüm Sözlük Listesi")
     sozluk = tum_kelimeleri_getir()
 
     if sozluk:
-        df = pd.DataFrame(sozluk.items(), columns=["Kelime", "Anlam"])
+        df = pd.DataFrame(
+            [(k, v['anlam'], v.get('es_anlamlar', '')) for k, v in sozluk.items()],
+            columns=["Kelime", "Anlam", "Eş Anlamlılar"]
+        )
         df.index += 1
         st.dataframe(df, use_container_width=True)
     else:
