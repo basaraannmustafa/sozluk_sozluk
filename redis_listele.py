@@ -5,18 +5,21 @@ def tum_kelimeleri_getir():
     kelimeler = {}
 
     for key in r.keys('*'):
-        if r.type(key) != b'hash':
+        try:
+            if r.type(key) != b'hash':
+                continue
+
+            veri = r.hgetall(key)
+            anlam = veri.get(b'anlam', b'').decode('utf-8')
+            es_anlam = veri.get(b'es_anlamlar', b'').decode('utf-8')
+            orijinal = veri.get(b'orijinal', key).decode('utf-8')
+
+            kelimeler[orijinal] = {
+                "anlam": anlam,
+                "es_anlamlar": es_anlam
+            }
+        except Exception as e:
+            print(f"Hata ({key}): {e}")
             continue
 
-        veri = r.hgetall(key)
-        anlam = veri.get(b'anlam', b'').decode('utf-8')
-        es_anlam = veri.get(b'es_anlamlar', b'').decode('utf-8')
-        orijinal = veri.get(b'orijinal', key).decode('utf-8')
-
-        kelimeler[orijinal] = {
-            "anlam": anlam,
-            "es_anlamlar": es_anlam
-        }
-
-    sirali_kelimeler = dict(sorted(kelimeler.items()))
-    return sirali_kelimeler
+    return dict(sorted(kelimeler.items()))
