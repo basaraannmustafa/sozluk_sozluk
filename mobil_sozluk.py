@@ -91,6 +91,7 @@ elif sayfa == "📖 Sözlük":
     ters_sozluk = {v: k for k, v in sozluk.items()}
 
     if st.button("Ara"):
+        giris = kelime.strip()
         bilgi = sozluk.get(kelime.lower()) or sozluk.get(kelime.capitalize())
         if not bilgi:
             ters_bilgi = ters_sozluk.get(kelime.lower()) or ters_sozluk.get(kelime.capitalize())
@@ -109,11 +110,21 @@ elif sayfa == "📖 Sözlük":
     yeni_anlam = st.text_input("Anlamı:")
     es_anlamlilar = st.text_input("Bu Kelimenin Eş Anlamlıları:")
 
-    if st.button("Ekle"):
-        if yeni_kelime and yeni_anlam:
-            es_anlam_listesi = [w.strip() for w in es_anlamlilar.split(",") if w.strip()]
-            kelime_ekle(yeni_kelime, yeni_anlam, es_anlam_listesi)
-            st.success(f"✅ '{yeni_kelime.capitalize()}' eklenmiştir.")
+   if st.button("Ekle"):
+    yeni_kelime = yeni_kelime.strip()
+    yeni_anlam = yeni_anlam.strip()
+    es_anlamlilar = es_anlamlilar.strip()
+
+    if yeni_kelime and yeni_anlam:
+        es_anlam_listesi = [w.strip() for w in es_anlamlilar.split(",") if w.strip()]
+        
+        kelime_ekle(yeni_kelime, yeni_anlam, es_anlam_listesi)
+        
+        st.write("🛠️ Debug verisi:", yeni_kelime, yeni_anlam, es_anlam_listesi)
+        st.success(f"✅ '{yeni_kelime.capitalize()}' eklenmiştir.")
+    else:
+        st.error("Lütfen hem kelimeyi hem anlamını girin.")
+
 
     st.subheader("🗑️ Kelime Sil")
     sil_kelime = st.text_input("Silinecek Kelime:")
