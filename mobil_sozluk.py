@@ -90,16 +90,15 @@ elif sayfa == "📖 Sözlük":
     sozluk = tum_kelimeleri_getir()
     ters_sozluk = {v: k for k, v in sozluk.items()}
 
+    kelime = st.text_input("Kelime giriniz:")
+    
     if st.button("Ara"):
         giris = kelime.strip()
         bilgi = sozluk.get(kelime.lower()) or sozluk.get(kelime.capitalize())
+        
         if not bilgi:
-            ters_bilgi = ters_sozluk.get(kelime.lower()) or ters_sozluk.get(kelime.capitalize())
-            if ters_bilgi:
-                bilgi = sozluk.get(ters_bilgi)
-                st.success(f"**{kelime.capitalize()} ➜ {ters_bilgi} ({bilgi.get('es_anlamlar', '')})**")
-            else:
-                st.error("Kelime bulunamadı.")
+        st.error("Kelime bulunamadı.")
+    
         else:
             es = bilgi.get('es_anlamlar', '')
             es_text = f" (Eş anlamlılar: {es})" if es else ""
