@@ -97,7 +97,7 @@ elif sayfa == "📖 Sözlük":
         bilgi = sozluk.get(kelime.lower()) or sozluk.get(kelime.capitalize())
         
         if not bilgi:
-        st.error("Kelime bulunamadı.")
+            st.error("Kelime bulunamadı.")
     
         else:
             es = bilgi.get('es_anlamlar', '')
