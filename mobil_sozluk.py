@@ -85,12 +85,10 @@ if sayfa == "🏠 Ana Sayfa":
 # 📖 Sözlük Sayfası
 elif sayfa == "📖 Sözlük":
     st.subheader("🔍 Kelime Ara")
-    kelime = st.text_input("Kelime giriniz:")
+    kelime = st.text_input("Kelime giriniz:", key="arama_kelimesi")
 
     sozluk = tum_kelimeleri_getir()
     ters_sozluk = {v: k for k, v in sozluk.items()}
-
-    kelime = st.text_input("Kelime giriniz:")
     
     if st.button("Ara"):
         giris = kelime.strip()
