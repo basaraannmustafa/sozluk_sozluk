@@ -110,10 +110,10 @@ elif sayfa == "📖 Sözlük":
     yeni_anlam = st.text_input("Anlamı:")
     es_anlamlilar = st.text_input("Bu Kelimenin Eş Anlamlıları:")
 
-if st.button("Ekle"):
-    yeni_kelime = yeni_kelime.strip()
-    yeni_anlam = yeni_anlam.strip()
-    es_anlamlilar = es_anlamlilar.strip()
+    if st.button("Ekle"):
+        yeni_kelime = yeni_kelime.strip()
+        yeni_anlam = yeni_anlam.strip()
+        es_anlamlilar = es_anlamlilar.strip()
 
     if yeni_kelime and yeni_anlam:
         es_anlam_listesi = [w.strip() for w in es_anlamlilar.split(",") if w.strip()]
