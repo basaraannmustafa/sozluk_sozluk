@@ -5,9 +5,9 @@ def tum_kelimeleri_getir():
     kelimeler = {}
 
     for key in r.keys('*'):
-        if r.type(key) != b'hash':  # 👈 sadece hash türünde olanları al
+        if r.type(key) != b'hash':
             continue
-            
+
         veri = r.hgetall(key)
         anlam = veri.get(b'anlam', b'').decode('utf-8')
         es_anlam = veri.get(b'es_anlamlar', b'').decode('utf-8')
@@ -17,7 +17,6 @@ def tum_kelimeleri_getir():
             "anlam": anlam,
             "es_anlamlar": es_anlam
         }
-
 
     sirali_kelimeler = dict(sorted(kelimeler.items()))
     return sirali_kelimeler
