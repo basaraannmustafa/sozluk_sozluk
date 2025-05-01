@@ -14,7 +14,7 @@ def tum_kelimeleri_getir():
             es_anlam = veri.get(b'es_anlamlar', b'').decode('utf-8')
             orijinal = veri.get(b'orijinal', key).decode('utf-8')
 
-            kelimeler[orijinal] = {
+            kelimeler[key.decode('utf-8')] = {
                 "anlam": anlam,
                 "es_anlamlar": es_anlam
             }
